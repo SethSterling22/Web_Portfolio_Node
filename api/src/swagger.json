@@ -1,0 +1,483 @@
+{
+    "openapi": "3.0.0",
+        "info": {
+        "version": "v1",
+        "title": "API de Portafolio",
+        "description": "Un API muy interesante sobre Portafolios de estudiantes y sus carreras. (Esta integración de Swagger estuvo interesante)"
+        },
+        "servers": [
+            {
+            "url": "https://aery.stegosaurus-panga.ts.net/api/v1",
+            "description": "Servidor Externo"
+        },
+        {
+            "url": "http://localhost:3001/api/v1",
+            "description": "Servidor Local"
+        }
+        ],
+        "paths": {
+        "/auth/login": {
+            "post": {
+            "summary": "Iniciar sesión para obtener un token JWT",
+            "description": "Permite a los usuarios autenticarse y obtener un token de acceso.",
+            "requestBody": {
+                "required": true,
+                "content": {
+                "application/json": {
+                    "schema": {
+                    "type": "object",
+                    "properties": {
+                        "email": {"type": "string", "format": "email", "example": "example@example.com"},
+                        "password": {"type": "string", "example": "123456"}
+                    }
+                    }
+                }
+                }
+            },
+            "responses": {
+                "200": {
+                "description": "Autenticación exitosa",
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {"token": {"type": "string", "description": "Token de acceso JWT"}}
+                    }
+                    }
+                }
+                },
+                "400": {"description": "Credenciales inválidas o solicitud incorrecta"},
+                "500": {"description": "Error interno del servidor"}
+            }
+            }
+        },
+        "/users": {
+            "get": {
+            "summary": "Obtener todos los usuarios",
+            "description": "Retorna una lista de todos los usuarios.",
+            "parameters": [
+                {
+                "name": "x-forwarded-for",
+                "in": "header",
+                "description": "Dirección IP del cliente",
+                "schema": {"type": "string"}
+                }
+            ],
+            "responses": {
+                "200": {
+                "description": "Lista de usuarios",
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"type": "string"},
+                            "email": {"type": "string", "format": "email"},
+                            "firstName": {"type": "string"},
+                            "lastName": {"type": "string"},
+                            "role": {"type": "string"}
+                        }
+                        }
+                    }
+                    }
+                }
+                },
+                "default": {"description": "Error inesperado"}
+            },
+            "security": [{"bearerAuth": []}]
+            },
+            "post": {
+            "summary": "Crear un nuevo usuario",
+            "description": "Crea un nuevo usuario con el rol 'user' por defecto.",
+            "requestBody": {
+                "required": true,
+                "content": {
+                "application/json": {
+                    "schema": {
+                    "type": "object",
+                    "properties": {
+                        "email": {"type": "string", "format": "email", "example": "example1@example.com"},
+                        "password": {"type": "string", "example": "123456"},
+                        "firstName": {"type": "string", "example": "example"},
+                        "lastName": {"type": "string", "example": "example"}
+                    },
+                    "required": ["email", "password", "firstName", "lastName"]
+                    }
+                }
+                }
+            },
+            "responses": {
+                "201": {
+                "description": "Usuario creado exitosamente",
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                        "id": {"type": "string"},
+                        "email": {"type": "string", "format": "email"},
+                        "firstName": {"type": "string"},
+                        "lastName": {"type": "string"},
+                        "role": {"type": "string"}
+                        }
+                    }
+                    }
+                }
+                },
+                "400": {"description": "Datos de entrada inválidos"}
+            }
+            }
+        },
+        "/users/{userId}": {
+            "get": {
+            "summary": "Obtener un usuario por ID",
+            "description": "Retorna la información de un usuario específico.",
+            "parameters": [{"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {
+                "200": {
+                "description": "Información del usuario",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/User"}}}
+                },
+                "404": {"description": "Usuario no encontrado"},
+                "default": {"description": "Error inesperado"}
+            },
+            "security": [{"bearerAuth": []}]
+            },
+            "put": {
+            "summary": "Actualizar un usuario por ID",
+            "description": "Actualiza la información de un usuario específico.",
+            "parameters": [
+                {"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}},
+                {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "requestBody": {
+                "required": true,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/UserUpdate"}}}
+            },
+            "responses": {
+                "200": {
+                "description": "Usuario actualizado exitosamente",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/User"}}}
+                },
+                "400": {"description": "Datos de entrada inválidos"},
+                "401": {"description": "No autorizado"},
+                "404": {"description": "Usuario no encontrado"}
+            },
+            "security": [{"bearerAuth": []}]
+            },
+            "delete": {
+            "summary": "Eliminar un usuario por ID",
+            "description": "Elimina un usuario específico.",
+            "parameters": [
+                {"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}},
+                {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "responses": {"204": {"description": "Usuario eliminado exitosamente"}, "401": {"description": "No autorizado"}, "404": {"description": "Usuario no encontrado"}},
+            "security": [{"bearerAuth": []}]
+            }
+        },
+        "/skills/{userId}": {
+            "get": {
+            "summary": "Obtener las habilidades de un usuario",
+            "description": "Retorna la lista de habilidades de un usuario específico.",
+            "parameters": [{"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {
+                "200": {
+                "description": "Lista de habilidades",
+                "content": {"application/json": {"schema": {"type": "array", "items": {"$ref": "#/components/schemas/Skill"}}}}
+                },
+                "default": {"description": "Error inesperado"}
+            },
+            "security": [{"bearerAuth": []}]
+            },
+            "post": {
+            "summary": "Crear una nueva habilidad para un usuario",
+            "description": "Crea una nueva habilidad para un usuario específico.",
+            "parameters": [
+                {"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}},
+                {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "requestBody": {
+                "required": true,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/NewSkill"}}}
+            },
+            "responses": {
+                "201": {
+                "description": "Habilidad creada exitosamente",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Skill"}}}
+                },
+                "400": {"description": "Datos de entrada inválidos"},
+                "401": {"description": "No autorizado"}
+            },
+            "security": [{"bearerAuth": []}]
+            }
+        },
+        "/skills/{userId}/{id}": {
+            "put": {
+            "summary": "Actualizar una habilidad de un usuario",
+            "description": "Actualiza una habilidad específica de un usuario.",
+            "parameters": [
+                {"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}},
+                {"name": "id", "in": "path", "required": true, "schema": {"type": "string"}, "description": "ID de la habilidad"},
+                {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "requestBody": {
+                "required": true,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/NewSkill"}}}
+            },
+            "responses": {
+                "200": {
+                "description": "Habilidad actualizada exitosamente",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Skill"}}}
+                },
+                "400": {"description": "Datos de entrada inválidos"},
+                "401": {"description": "No autorizado"},
+                "404": {"description": "Habilidad no encontrada"}
+            },
+            "security": [{"bearerAuth": []}]
+            },
+            "delete": {
+            "summary": "Eliminar una habilidad de un usuario",
+            "description": "Elimina una habilidad específica de un usuario.",
+            "parameters": [
+                {"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}},
+                {"name": "id", "in": "path", "required": true, "schema": {"type": "string"}, "description": "ID de la habilidad"},
+                {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "responses": {"204": {"description": "Habilidad eliminada exitosamente"}, "401": {"description": "No autorizado"}, "404": {"description": "Habilidad no encontrada"}},
+            "security": [{"bearerAuth": []}]
+            }
+        },
+        "/experiences/{userId}": {
+            "get": {
+            "summary": "Obtener experiencias de un usuario",
+            "description": "Retorna la lista de experiencias (laborales o proyectos) de un usuario específico.",
+            "parameters": [{"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {
+                "200": {
+                "description": "Lista de experiencias",
+                "content": {"application/json": {"schema": {"type": "array", "items": {"$ref": "#/components/schemas/Experience"}}}}
+                },
+                "default": {"description": "Error inesperado"}
+            },
+            "security": [{"bearerAuth": []}]
+            },
+            "post": {
+            "summary": "Crear una nueva experiencia para un usuario",
+            "description": "Crea una nueva experiencia (laboral o proyecto) para un usuario específico.",
+            "parameters": [
+                {"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}},
+                {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "requestBody": {
+                "required": true,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/NewExperience"}}}
+            },
+            "responses": {
+                "201": {
+                "description": "Experiencia creada exitosamente",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Experience"}}}
+                },
+                "400": {"description": "Datos de entrada inválidos"},
+                "401": {"description": "No autorizado"}
+            },
+            "security": [{"bearerAuth": []}]
+            }
+        },
+        "/experiences/{userId}/{id}": {
+            "put": {
+            "summary": "Actualizar una experiencia de un usuario",
+            "description": "Actualiza una experiencia específica (laboral o proyecto) de un usuario.",
+            "parameters": [
+                {"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}},
+                {"name": "id", "in": "path", "required": true, "schema": {"type": "string"}, "description": "ID de la experiencia"},
+                {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "requestBody": {
+                "required": true,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/NewExperience"}}}
+            },
+            "responses": {
+                "200": {
+                "description": "Experiencia actualizada exitosamente",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Experience"}}}
+                },
+                "400": {"description": "Datos de entrada inválidos"},
+                "401": {"description": "No autorizado"},
+                "404": {"description": "Experiencia no encontrada"}
+            },
+            "security": [{"bearerAuth": []}]
+            },
+            "delete": {
+            "summary": "Eliminar una experiencia de un usuario",
+            "description": "Elimina una experiencia específica (laboral o proyecto) de un usuario.",
+            "parameters": [
+                {"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}},
+                {"name": "id", "in": "path", "required": true, "schema": {"type": "string"}, "description": "ID de la experiencia"},
+                {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "responses": {"204": {"description": "Experiencia eliminada exitosamente"}, "401": {"description": "No autorizado"}, "404": {"description": "Experiencia no encontrada"}},
+            "security": [{"bearerAuth": []}]
+            }
+        },
+        "/educations/{userId}": {
+            "get": {
+            "summary": "Obtener la educación de un usuario",
+            "description": "Retorna la lista de información educativa de un usuario específico.",
+            "parameters": [{"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {
+                "200": {
+                "description": "Información educativa",
+                "content": {"application/json": {"schema": {"type": "array", "items": {"$ref": "#/components/schemas/Education"}}}}
+                },
+                "default": {"description": "Error inesperado"}
+            },
+            "security": [{"bearerAuth": []}]
+            },
+            "post": {
+            "summary": "Crear nueva información educativa para un usuario",
+            "description": "Crea nueva información educativa para un usuario específico.",
+            "parameters": [
+                {"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}},
+                {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "requestBody": {
+                "required": true,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/NewEducation"}}}
+            },
+            "responses": {
+                "201": {
+                "description": "Información educativa creada exitosamente",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Education"}}}
+                },
+                "400": {"description": "Datos de entrada inválidos"},
+                "401": {"description": "No autorizado"}
+            },
+            "security": [{"bearerAuth": []}]
+            }
+        },
+        "/educations/{userId}/{id}": {
+            "put": {
+            "summary": "Actualizar información educativa de un usuario",
+            "description": "Actualiza una entrada específica de información educativa de un usuario.",
+            "parameters": [
+            {"name": "id", "in": "path", "required": true, "schema": {"type": "string"}, "description": "ID de la educación"},
+            {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "requestBody": {
+            "required": true,
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/NewEducation"}}}
+            },
+            "responses": {
+            "200": {
+                "description": "Información educativa actualizada exitosamente",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Education"}}}
+            },
+            "400": {"description": "Datos de entrada inválidos"},
+            "401": {"description": "No autorizado"},
+            "404": {"description": "Información educativa no encontrada"}
+            },
+            "security": [{"bearerAuth": []}]
+        },
+        "delete": {
+            "summary": "Eliminar información educativa de un usuario",
+            "description": "Elimina una entrada específica de información educativa de un usuario.",
+            "parameters": [
+            {"name": "userId", "in": "path", "required": true, "schema": {"type": "string"}},
+            {"name": "id", "in": "path", "required": true, "schema": {"type": "string"}, "description": "ID de la educación"},
+            {"name": "authorization", "in": "header", "description": "Token de autorización Bearer", "required": true, "schema": {"type": "string"}}
+            ],
+            "responses": {"204": {"description": "Información educativa eliminada exitosamente"}, "401": {"description": "No autorizado"}, "404": {"description": "Información educativa no encontrada"}},
+            "security": [{"bearerAuth": []}]
+        }
+        }
+    },
+    "components": {
+        "schemas": {
+        "User": {
+            "type": "object",
+            "properties": {
+            "id": {"type": "string"},
+            "email": {"type": "string", "format": "email"},
+            "firstName": {"type": "string"},
+            "lastName": {"type": "string"},
+            "role": {"type": "string"}
+            }
+        },
+        "UserUpdate": {
+            "type": "object",
+            "properties": {
+            "firstName": {"type": "string", "example": "updated example"},
+            "lastName": {"type": "string", "example": "updated example"}
+            }
+        },
+        "Skill": {
+            "type": "object",
+            "properties": {
+            "id": {"type": "string"},
+            "name": {"type": "string", "example": "JavaScript"},
+            "level": {"type": "string", "enum": ["Beginner", "Intermediate", "Advanced"], "example": "Advanced"}
+            }
+        },
+        "NewSkill": {
+            "type": "object",
+            "properties": {
+            "name": {"type": "string", "example": "React"},
+            "level": {"type": "string", "enum": ["Beginner", "Intermediate", "Advanced"], "example": "Intermediate"}
+            },
+            "required": ["name", "level"]
+        },
+        "Experience": {
+            "type": "object",
+            "properties": {
+            "id": {"type": "string"},
+            "title": {"type": "string", "example": "Frontend Developer"},
+            "company": {"type": "string", "example": "Tech Corp"},
+            "startDate": {"type": "string", "format": "date", "example": "2022-01-01"},
+            "endDate": {"type": ["string", "null"], "format": "date", "example": "2023-12-31"},
+            "description": {"type": "string", "example": "Developed user interfaces..."}
+            }
+        },
+        "NewExperience": {
+            "type": "object",
+            "properties": {
+            "title": {"type": "string", "example": "Project Manager"},
+            "company": {"type": "string", "example": "Innovate Inc"},
+            "startDate": {"type": "string", "format": "date", "example": "2024-01-01"},
+            "endDate": {"type": ["string", "null"], "format": "date", "example": null},
+            "description": {"type": "string", "example": "Led cross-functional teams..."}
+            },
+            "required": ["title", "company", "startDate", "description"]
+        },
+        "Education": {
+            "type": "object",
+            "properties": {
+            "id": {"type": "string"},
+            "institution": {"type": "string", "example": "University of Example"},
+            "degree": {"type": "string", "example": "Bachelor of Science in Computer Science"},
+            "startDate": {"type": "string", "format": "date", "example": "2018-09-01"},
+            "endDate": {"type": ["string", "null"], "format": "date", "example": "2022-05-31"}
+            }
+        },
+        "NewEducation": {
+            "type": "object",
+            "properties": {
+            "institution": {"type": "string", "example": "Tech Academy"},
+            "degree": {"type": "string", "example": "Full Stack Web Development Certificate"},
+            "startDate": {"type": "string", "format": "date", "example": "2023-06-01"},
+            "endDate": {"type": ["string", "null"], "format": "date", "example": "2023-12-15"}
+            },
+            "required": ["institution", "degree", "startDate"]
+        }
+        },
+        "securitySchemes": {
+        "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+        }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "upms",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite --host --port 3000",
+    "dev": "vite --host --port 3000",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.511.0",
+    "react": "^19.0.0",
+    "react-bootstrap": "^2.10.9",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.6.0",
+    "sass": "^1.86.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/bootstrap": "^5.2.10",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "sass-embedded": "^1.86.0",
+    "vite": "^6.2.0"
+  },
+  "description": "<!-- // Sebastián Hernández Sterling 801 - 21 -1038 // Yaira K. Rivera Sánchez // CCOM4995-001 -->",
+  "main": "eslint.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

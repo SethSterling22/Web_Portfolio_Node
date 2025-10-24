@@ -1,0 +1,92 @@
+// Colores
+$theme-colors: (
+  "primary": #4e73df,
+  "secondary": #d36c18,
+  "success": #1E5959,
+  "info": #164773,
+  "warning": #f6c23e,
+  "danger": #8b1e14,
+  "light": #57c673,
+  "dark": #0B2B40
+);
+
+@import "bootstrap/scss/bootstrap";
+
+body {
+  height: 100%;
+  color: black;
+  background-color: #d3f1f1;
+}
+
+.navbar-brand {
+  font-weight: 700;
+}
+
+.card {
+  transition: transform 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.min-width-60 {
+  min-width: 60vw;
+}
+
+.flex-fill {
+  flex: 1;
+}
+
+.min-vw-100 {
+  min-width: 100vw;
+}
+
+.card-img-top {
+  max-width: 500px;
+  height: auto; 
+  margin: 20px auto; 
+}
+
+.page-layout {
+  display: flex;
+  min-height: 100vh;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.accordion-button{
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.01);
+  }
+}
+
+.button-hover{
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.01);
+  }
+}
+
+footer {
+  color: white;
+  // width: 70vw;
+}
+
+.px-10{
+  padding-left: 10rem;
+  padding-right: 10rem;
+}
+
+.loader{
+  position: fixed;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  background-origin: rgba(0, 0, 0, 0.8);
+  z-index: 100000000;
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%;
+}
