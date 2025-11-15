@@ -1,0 +1,80 @@
+services:
+  # 1. PostgreSQL Service
+  portfolio-db:
+    image: postgres:15-alpine
+    container_name: portfolio-postgres
+    restart: always
+    environment:
+      # PostgreSQL cretendentials
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secure_password
+      POSTGRES_DB: Portfolio
+  
+    volumes:
+      # Data persistance
+      - postgres_data:/var/lib/postgresql/data
+      # Initialization Script of the Database
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      # Accessible just from the API network
+      - db_backend_net
+
+  # 2. Node.js API Service (Backend)
+  portfolio-api:
+    build:
+      context: ..
+      dockerfile: .api/dockerfile
+    # image: my-node-api:latest
+    container_name: portfolio-api
+    restart: always
+    # Expose Application Port (5000) 
+    expose:
+      - 5000
+
+    env_file:
+      - ../api/src/config/.env
+
+    environment:
+      DB_SERVER: portfolio-db # Use the DB service name as Host
+      
+
+    networks:
+      # Connected to DB (Via db_backend_net)
+      - db_backend_net
+      # Accessible by Tailscale (Via app_access_net)
+      - app_access_net
+    depends_on:
+      - portfolio-db
+
+
+  # 3. Tailscale Service (Proxy)
+  tailscale-proxy:
+    image: tailscale/tailscale:latest
+    container_name: tailscale-funnel
+    cap_add:
+      - NET_ADMIN 
+    devices:
+      - /dev/net/tun
+
+    # IMPORTANT: you must add your Tailscale authentication key
+    environment:
+      TS_AUTHKEY: your_tailscale_auth_key_here
+      TS_ACCEPT_DNS: "false" # Can be changed if needed
+    command: tailscaled
+    networks:
+      # Connected to the API network
+      - app_access_net
+
+
+### Networks declaration
+networks:
+  # Private Network: For internal communication API <-> DB
+  db_backend_net:
+    driver: bridge
+  # Access Network: for API and Proxy (Tailscale)
+  app_access_net:
+    driver: bridge
+
+### Data persistence
+volumes:
+  postgres_data:

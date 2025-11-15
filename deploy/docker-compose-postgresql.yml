@@ -1,0 +1,22 @@
+services:
+  portfolio_db:
+    image: postgres:15-alpine
+    container_name: portfolio-postgres
+    restart: always 
+    
+    env_file: ./.env
+
+    ports:
+      - 5432:5432 
+    volumes:
+      # Data Persistence
+      - postgres_data:/var/lib/postgresql/data
+
+      # Database Directory: The script will be executed for first time
+      - ./init-db:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres_data:
+
+# Create database: psql -U user -d Portfolio -f init-db.sql 
+

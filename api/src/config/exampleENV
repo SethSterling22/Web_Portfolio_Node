@@ -1,0 +1,13 @@
+DB_USER=
+DB_PASSWORD=
+DB_SERVER=
+DB_DATABASE=
+DB_PORT=
+DB_ENCRYPT=true
+DB_TRUST_SERVER_CERTIFICATE=false
+
+# Llave del API, no subir a GitHub
+API_KEY=
+
+# Importante no subirlo a GitHub
+JWT_SECRET=

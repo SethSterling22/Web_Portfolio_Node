@@ -1,0 +1,18 @@
+FROM node:18-alpine
+
+WORKDIR /usr/src/app
+
+# COpy app Packages
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the source code to the container
+COPY . .
+
+# Expose the application port (same as the docker-compose file)
+EXPOSE 5000
+
+# Start the app
+CMD [ "node", "src/server.js" ]
