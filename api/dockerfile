@@ -2,14 +2,17 @@ FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
-# COpy app Packages
+# Copy app Packages
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the source code to the container
-COPY . .
+# Run directly
+# COPY . .
+# Run with docker compose
+COPY src src
 
 # Expose the application port (same as the docker-compose file)
 EXPOSE 5000

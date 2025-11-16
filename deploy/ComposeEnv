@@ -1,0 +1,10 @@
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_DB=
+
+
+# Tailscale Variables
+TS_AUTHKEY=
+TS_ACCEPT_DNS= # Can be changed if needed
+TS_USERSPACE=false
+
