@@ -2,8 +2,13 @@
 // Leer las variables de entorno del escritorio raíz
 require('dotenv').config({ path: '.env' });
 
-// For PostgreSQL
+// For PostgreSQL (must change "connection.request().query"
+// to "connection.query()"  in the Models when use "pg")
+
+// And replace .request() with .query()
+// const result = await pool.query(queryText, values);
 const { Pool } = require('pg');
+
 
 // For AZURE
 // const sql = require('mssql');

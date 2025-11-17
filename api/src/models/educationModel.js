@@ -5,7 +5,8 @@ const { connectDB, sql } = require('../config/db');
 async function getUserByEducationId(id) {
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('id', sql.Int, id)
             .query('SELECT UserId FROM [Education] WHERE Id = @id');
 
@@ -25,7 +26,8 @@ async function getUserByEducationId(id) {
 async function getEducationByUser(userId) {
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('UserId', sql.Int, userId)
             .query(`
                 SELECT e.*, d.Name AS DegreeName 
@@ -43,7 +45,8 @@ async function getEducationByUser(userId) {
 async function getEducationById( userId, id ) {
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('Id', sql.Int, id)
             .input('UserId', sql.Int, userId)
             .query(`
@@ -62,7 +65,8 @@ async function getEducationById( userId, id ) {
 async function createEducation(UserId, educationData) {
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('UserId', sql.Int, UserId)
             .input('institution', sql.VarChar, educationData.institution)
             .input('degreeId', sql.Int, educationData.degreeId)
@@ -132,7 +136,8 @@ async function updateEducation( userId, id, educationData) {
 async function deleteEducation( UserId, id) {
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('Id', sql.Int, id)
             .input('UserId', sql.Int, UserId)
             .query('DELETE FROM [Education] WHERE Id = @Id AND UserId = @UserId');

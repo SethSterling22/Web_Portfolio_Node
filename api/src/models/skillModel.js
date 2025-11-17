@@ -4,7 +4,8 @@ const { connectDB, sql } = require('../config/db');
 async function getUserBySkillId(id) {
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('id', sql.Int, id)
             .query('SELECT UserId FROM [Skill] WHERE Id = @id');
         
@@ -23,7 +24,8 @@ async function getUserBySkillId(id) {
 async function getSkillsByUser(userId) {
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('UserId', sql.Int, userId)
             .query('SELECT * FROM [Skill] WHERE UserId = @UserId');
         return result.recordset;
@@ -35,7 +37,8 @@ async function getSkillsByUser(userId) {
 async function getSkillById(id, userId) {
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('Id', sql.Int, id)
             .input('UserId', sql.Int, userId)
             .query('SELECT TOP 1 * FROM [Skill] WHERE Id = @Id AND UserId = @UserId');
@@ -49,7 +52,8 @@ async function createSkill(userId, data) {
     // console.log("osufhgodifsvnin")
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('UserId', sql.Int, userId)
             .input('name', sql.VarChar, data.name)
             .input('proficiency', sql.VarChar, data.proficiency)
@@ -106,7 +110,8 @@ async function updateSkill( userId, id, skillData) {
 async function deleteSkill( UserId, id ) {
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('Id', sql.Int, id)
             .input('UserId', sql.Int, UserId)
             .query('DELETE FROM [Skill] WHERE Id = @Id AND UserId = @UserId');

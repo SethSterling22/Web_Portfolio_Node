@@ -6,7 +6,8 @@ async function getContactsByUserEmail(email) {
     // console.log(email)
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('email', sql.VarChar, email)
             // .query('SELECT * FROM [Contact] WHERE Email = @email');
             .query(`
@@ -32,7 +33,8 @@ async function createContact(userId, data) {
     const sentDate = new Date(); 
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('UserId', sql.Int, userId)
             .input('email', sql.VarChar, data.email)
             .input('message', sql.VarChar, data.message)
@@ -53,7 +55,8 @@ async function createContact(userId, data) {
 async function deleteContact( id ) {
     try {
         let connection = await connectDB();
-        let result = await connection.request()
+        // let result = await connection.request()
+        let result = await connection
             .input('id', sql.VarChar, id)
             .query('DELETE FROM [Contact] WHERE Id = @id');
         
