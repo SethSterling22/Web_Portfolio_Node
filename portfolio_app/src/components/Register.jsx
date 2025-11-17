@@ -54,9 +54,9 @@ const Register = ({ setAuthError, setLoading }) => {
         }
     
         if (!PASSWORD_REGEX.test(password)) {
-        setError('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.');
-        setLoading(false);
-        return;
+            setError('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.');
+            setLoading(false);
+            return;
         }
     
         // Consulta al API
