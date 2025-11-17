@@ -5,10 +5,12 @@ const token = localStorage.getItem('authToken');
 
 const api = axios.create({
   // baseURL: 'http://localhost:3001/api/v1/',
-  baseURL: 'https://aery.stegosaurus-panga.ts.net/api/v1/',
+  // Chenge the baseURL with your API URL
+  baseURL: 'https://tailscale-funnel.stegosaurus-panga.ts.net/api/v1/',
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
+    // Change the APIKEY with the variable in your API .env
     'X-Api-Key': 'Un_API_KEY_Muy_Seguro_y_confiable_:D',
     'Authorization': token ? `Bearer ${token}` : ''
   },

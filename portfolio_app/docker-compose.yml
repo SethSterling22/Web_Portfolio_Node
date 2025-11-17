@@ -1,0 +1,14 @@
+services:
+  portfolio-frontend:
+    build:
+      #context: ../portfolio_app  # El contexto es la carpeta portfolio_app
+      dockerfile: ./dockerfile   # El Dockerfile está dentro de portfolio_app
+    container_name: portfolio-frontend
+    restart: always
+    ports:
+      - "8080:80"  
+        
+######################################################
+# Change tha BaseURL and the APIKEY in the file 
+# "api.js" (portfolio_app/src/services) to match 
+# your .env variables

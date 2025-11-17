@@ -5,10 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: [
-      'aery.stegosaurus-panga.ts.net',
-      'aery',
-    ],
+    // Accept all hosts for dinamic ip
+    allowedHosts: true,
+    //allowedHosts: [
+    //  'aery',
+    //],
   },
   css: {
     preprocessorOptions: {
