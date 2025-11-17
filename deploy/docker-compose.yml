@@ -5,23 +5,45 @@ services:
 
   ####################################################################
   # 1. PostgreSQL Service
-  portfolio-db:
-    image: postgres:15-alpine
-    container_name: portfolio-postgres
-    restart: always
+  # portfolio-db:
+  #   image: postgres:15-alpine
+  #   container_name: portfolio-postgres
+  #   restart: always
     
-    # PostgreSQL cretendentials
+  #   # PostgreSQL cretendentials
+  #   env_file: ./.env
+  
+  #   volumes:
+  #     # Data persistance
+  #     - postgres_data:/var/lib/postgresql/data
+  #     # Initialization Script of the Database
+  #     - ./init-db:/docker-entrypoint-initdb.d
+  #   networks:
+  #     # Accessible just from the API network
+  #     - db_backend_net
+
+  portfolio_db:
+    # MySQL image (version 8.0)
+    image: mysql:8.0
+    container_name: portfolio-mysql
+    restart: always
+
+    # Load Env-File
     env_file: ./.env
-  
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} 
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+
     volumes:
-      # Data persistance
-      - postgres_data:/var/lib/postgresql/data
-      # Initialization Script of the Database
-      - ./init-db:/docker-entrypoint-initdb.d
-    networks:
-      # Accessible just from the API network
-      - db_backend_net
-  
+      # Data Persistence
+      - mysql_data:/var/lib/mysql
+
+      # Database inicialization
+      # The Script must be .sql o .sh
+      - ./init-db-mysql:/docker-entrypoint-initdb.d
+
 
   ####################################################################
   # 2. Node.js API Service (Backend)
@@ -73,7 +95,9 @@ networks:
   
 ### Data persistence
 volumes:
-  postgres_data:
+  # postgres_data:
+  mysql_data:
+
 
 ####################################################################
 # How to run it:

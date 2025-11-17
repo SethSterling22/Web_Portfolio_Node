@@ -7,8 +7,8 @@ const saltRounds = 10;
 async function getUsers() {
     try {
         let connection = await connectDB();
-        // // let result = await connection.request()
-        let result = await connection.query('SELECT * FROM [User]');
+        let result = await connection.request().query('SELECT * FROM [User]');
+        //let result = await connection.query('SELECT * FROM [User]');
         return result.recordset;
     } catch (err) {
         throw new Error(err.message);
@@ -19,8 +19,8 @@ async function getUsers() {
 async function getUserById(id) {
     try {
         let connection = await connectDB();
-        // let result = await connection.request()
-        let result = await connection
+        let result = await connection.request()
+        // let result = await connection
             .input('Id', sql.Int, id)
             .query('SELECT TOP 1 * FROM [User] WHERE Id = @Id');
         return result.recordset[0];
@@ -33,8 +33,8 @@ async function getUserById(id) {
 async function getUserByEmail(email) {
     try {
         let connection = await connectDB();
-        // let result = await connection.request()
-        let result = await connection
+        let result = await connection.request()
+        // let result = await connection
             .input('Email', sql.VarChar, email)
             .query('SELECT * FROM [User] WHERE Email = @Email');
         return result.recordset[0];
@@ -51,8 +51,8 @@ async function createUser(data) {
         // console.log(hashedPassword)
 
         let connection = await connectDB();
-        // let result = await connection.request()
-        let result = await connection
+        let result = await connection.request()
+        // let result = await connection
             .input('email', sql.VarChar, data.email)
             .input('password', sql.VarChar, hashedPassword)
             .input('firstname', sql.VarChar, data.firstName)
@@ -133,7 +133,7 @@ async function updateUser(id, data) {
 async function deleteUser(id) {
     try {
         let connection = await connectDB();
-        await connection
+        await connection.request()
             .input('Id', sql.Int, id)
             .query('DELETE FROM [User] WHERE Id = @Id');
         return true;

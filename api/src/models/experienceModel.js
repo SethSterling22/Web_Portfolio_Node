@@ -4,8 +4,8 @@ const { connectDB, sql } = require('../config/db');
 async function getUserByExperienceId(id) {
     try {
         let connection = await connectDB();
-        // let result = await connection.request()
-        let result = await connection
+        let result = await connection.request()
+        // let result = await connection
             .input('id', sql.Int, id)
             .query('SELECT UserId FROM [Experience] WHERE Id = @id');
 
@@ -23,8 +23,8 @@ async function getUserByExperienceId(id) {
 async function getExperiencesByUser(UserId) {
     try {
         let connection = await connectDB();
-        // let result = await connection.request()
-        let result = await connection
+        let result = await connection.request()
+        // let result = await connection
             .input('UserId', sql.Int, UserId)
             .query('SELECT * FROM [Experience] WHERE UserId = @UserId');
         return result.recordset;
@@ -36,8 +36,8 @@ async function getExperiencesByUser(UserId) {
 async function getExperienceById(userId, id) {
     try {
         let connection = await connectDB();
-        // let result = await connection.request()
-        let result = await connection
+        let result = await connection.request()
+        // let result = await connection
             .input('Id', sql.Int, id)
             .input('UserId', sql.Int, userId)
             .query('SELECT TOP 1 * FROM [Experience] WHERE Id = @Id AND UserId = @UserId');
@@ -50,8 +50,8 @@ async function getExperienceById(userId, id) {
 async function createExperience(userId, experienceData) {
     try {
         let connection = await connectDB();
-        // let result = await connection.request()
-        let result = await connection
+        let result = await connection.request()
+        // let result = await connection
             .input('UserId', sql.Int, userId)
             .input('jobTitle', sql.VarChar, experienceData.jobTitle)
             .input('company', sql.VarChar, experienceData.company)
@@ -127,8 +127,8 @@ async function updateExperience( UserId, id, experienceData) {
 async function deleteExperience( UserId, id ) {
     try {
         let connection = await connectDB();
-        // let result = await connection.request()
-        let result = await connection
+        let result = await connection.request()
+        // let result = await connection
             .input('Id', sql.Int, id)
             .input('UserId', sql.Int, UserId)
             .query('DELETE FROM [Experience] WHERE Id = @Id AND UserId = @UserId');

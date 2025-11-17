@@ -7,16 +7,16 @@ async function getPortfolio(UserId) {
         
         const [ user, skills, experience, education] = await Promise.all([
             userModel.getUserById(UserId),
-            // connection.request()
-            connection
+            connection.request()
+            // connection
                 .input('UserId', sql.Int, UserId)
                 .query('SELECT * FROM [Skill] WHERE UserId = @UserId'),
-            // connection.request()
-            connection
+            connection.request()
+            // connection
                 .input('UserId', sql.Int, UserId)
                 .query('SELECT * FROM [Experience] WHERE UserId = @UserId'),
-            // connection.request()
-            connection
+            connection.request()
+            // connection
                 .input('UserId', sql.Int, UserId)
                 .query(`
                     SELECT e.*, d.Name AS DegreeName 
