@@ -9,6 +9,8 @@ services:
       - "8080:80"  
         
 ######################################################
+# Run it with:  sudo docker compose build --no-cache && sudo docker compose up -d
+
 # Change tha BaseURL and the APIKEY in the file 
 # "api.js" (portfolio_app/src/services) to match 
 # your .env variables

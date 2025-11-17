@@ -70,7 +70,7 @@ const NavBarWelcome = (  ) => {
             <div className="collapse navbar-collapse align-items-center justify-content-between" id="navbarToggler">
                 <div className='d-flex' id='navWelcome'>
                     <a className="navbar-brand align-items-center d-flex" href="" onClick={(e) => handleNavigation(e, '/welcome')}>
-                        <img src="https://webserver1.stegosaurus-panga.ts.net/portfolio/assets/logo.png" width="45" height="45" className="d-inline-block align-top" alt="loguito"/>
+                        <img src="https://aeryportfolio.wordpress.com/wp-content/uploads/2024/02/sin-titulo-1_mesa-de-trabajo-1-1-edited.png" width="45" height="45" className="d-inline-block align-top" alt="loguito"/>
                         Portafolio 3.0
                     </a>
                     

@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+// Importing Env-Variables
+const API_KEY = import.meta.env.API_KEY;
+
 // Obtener el token de localStorage
 const token = localStorage.getItem('authToken');
 
@@ -11,6 +14,7 @@ const api = axios.create({
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
     // Change the APIKEY with the variable in your API .env
+    'X-Api-key': API_KEY,
     'X-Api-Key': 'Un_API_KEY_Muy_Seguro_y_confiable_:D',
     'Authorization': token ? `Bearer ${token}` : ''
   },
