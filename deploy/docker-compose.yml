@@ -4,6 +4,7 @@
 services:
 
   ####################################################################
+  ############ POSTGRESQL ############ 
   # 1. PostgreSQL Service
   # portfolio-db:
   #   image: postgres:15-alpine
@@ -22,28 +23,60 @@ services:
   #     # Accessible just from the API network
   #     - db_backend_net
 
+
+  ############ MYSQL ############ 
+  # portfolio-db:
+  #   # MySQL image (version 8.0)
+  #   image: mysql:8.0
+  #   container_name: portfolio-mysql
+  #   restart: always
+
+  #   # Load Env-File
+  #   env_file: ./.env
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} 
+  #     MYSQL_DATABASE: ${DB_NAME}
+  #     MYSQL_USER: ${DB_USER}
+  #     MYSQL_PASSWORD: ${DB_PASSWORD}
+
+  #   volumes:
+  #     # Data Persistence
+  #     - mysql_data:/var/lib/mysql
+
+  #     # Database inicialization
+  #     # The Script must be .sql o .sh
+  #     - ./init-db-mysql:/docker-entrypoint-initdb.d
+    
+  #   networks:
+  #     # Accessible just from the API networs
+  #     - db_backend_net
+
+
+  ############ MSSQL ############ 
   portfolio-db:
-    # MySQL image (version 8.0)
-    image: mysql:8.0
-    container_name: portfolio-mysql
+    # Official MS SQL Server image
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: portfolio-mssql
     restart: always
 
     # Load Env-File
     env_file: ./.env
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} 
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      # IMPORTANT: Strong password is required by MS SQL Server
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD}
+      # IMPORTANT: Accept the End-User License Agreement
+      ACCEPT_EULA: "Y" 
+      MSSQL_DB: ${DB_NAME}
 
     volumes:
       # Data Persistence
-      - mysql_data:/var/lib/mysql
-
-      # Database inicialization
-      # The Script must be .sql o .sh
-      - ./init-db-mysql:/docker-entrypoint-initdb.d
+      - mssql_data:/var/opt/mssql
+      - ../init-db-mssql/init-db-mssql.sql:/db/init.sql
+      - ../init-db-mssql/entrypoint.sh:/entrypoint.sh
     
+    # Execute the database initialization
+    entrypoint: ["/bin/bash", "/entrypoint.sh"]
+
     networks:
       # Accessible just from the API networs
       - db_backend_net
@@ -97,10 +130,11 @@ networks:
   db_backend_net:
     driver: bridge
   
-### Data persistence
+### Data persistence (Comment or Uncomment the volume depending on the database selected)
 volumes:
   # postgres_data:
-  mysql_data:
+  # mysql_data:
+  mssql_data:
 
 
 ####################################################################
