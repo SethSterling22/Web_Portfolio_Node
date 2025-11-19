@@ -71,8 +71,8 @@ services:
     volumes:
       # Data Persistence
       - mssql_data:/var/opt/mssql
-      - ../init-db-mssql/init-db-mssql.sql:/db/init.sql
-      - ../init-db-mssql/entrypoint.sh:/entrypoint.sh
+      - ./init-db-mssql/init-db-mssql.sql:/db/init.sql
+      - ./init-db-mssql/entrypoint.sh:/entrypoint.sh
     
     # Execute the database initialization
     entrypoint: ["/bin/bash", "/entrypoint.sh"]
@@ -147,4 +147,6 @@ volumes:
 # To see what's happening:
 #   sudo docker compose logs -f
 
+# To recreate a single container in the compose file:
+#   sudo docker compose up -d --build {SERVICE_NAME}
 

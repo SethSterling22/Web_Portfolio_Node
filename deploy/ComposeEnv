@@ -8,9 +8,10 @@ TS_AUTHKEY=
 TS_ACCEPT_DNS= # Can be changed if needed
 TS_USERSPACE=false
 
+
 # MySql Variables
 DB_NAME=
 DB_USER=
 DB_PASSWORD=
 DB_HOST=portfolio_db
-DB_PORT=3306
+# Use default ports
