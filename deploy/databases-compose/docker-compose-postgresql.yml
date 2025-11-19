@@ -13,7 +13,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
       # Database Directory: The script will be executed for first time
-      - ./init-db:/docker-entrypoint-initdb.d
+      - ../init-db:/docker-entrypoint-initdb.d
 
 volumes:
   postgres_data:

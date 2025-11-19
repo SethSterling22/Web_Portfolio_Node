@@ -1,0 +1,16 @@
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_DB=
+
+# Tailscale Variables
+TS_AUTHKEY=
+TS_ACCEPT_DNS="false" # Can be changed if needed
+TS_USERSPACE=false
+
+
+# Variables for MySQL connection or MSSQL 
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+DB_HOST=
+DB_PORT=

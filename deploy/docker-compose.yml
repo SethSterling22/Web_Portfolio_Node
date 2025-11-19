@@ -22,7 +22,7 @@ services:
   #     # Accessible just from the API network
   #     - db_backend_net
 
-  portfolio_db:
+  portfolio-db:
     # MySQL image (version 8.0)
     image: mysql:8.0
     container_name: portfolio-mysql
@@ -43,6 +43,10 @@ services:
       # Database inicialization
       # The Script must be .sql o .sh
       - ./init-db-mysql:/docker-entrypoint-initdb.d
+    
+    networks:
+      # Accessible just from the API networs
+      - db_backend_net
 
 
   ####################################################################
@@ -105,4 +109,8 @@ volumes:
 
 # After all the containers were created, the next command must be executed to activate the service:
 #   sudo docker exec tailscale-funnel tailscale funnel --bg 5000
+
+# To see what's happening:
+#   sudo docker compose logs -f
+
 
