@@ -8,7 +8,7 @@ TS_ACCEPT_DNS="false" # Can be changed if needed
 TS_USERSPACE=false
 
 
-# Variables for MySQL connection or MSSQL 
+# Variables for MySQL connection or MSSQL (user=SA for mssql)
 DB_NAME=
 DB_USER=
 DB_PASSWORD=

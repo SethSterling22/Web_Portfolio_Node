@@ -148,5 +148,5 @@ volumes:
 #   sudo docker compose logs -f
 
 # To recreate a single container in the compose file:
-#   sudo docker compose up -d --build {SERVICE_NAME}
+#   sudo docker compose up -d --build --no-deps {SERVICE_NAME}
 
