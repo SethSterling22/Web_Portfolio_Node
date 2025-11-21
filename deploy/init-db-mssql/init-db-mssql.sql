@@ -19,7 +19,7 @@ CREATE TABLE [User] (
     [LastName] VARCHAR(150) NOT NULL,
     [LastLogin] DATETIME2, -- Preferred date/time type in MSSQL
     [Role] VARCHAR(15), 
-    [Description] VARCHAR(500), 
+    [Description] NVARCHAR(MAX), 
     [RegisteredOn] DATETIME2 NOT NULL DEFAULT GETDATE() -- Use GETDATE()
 );
 
