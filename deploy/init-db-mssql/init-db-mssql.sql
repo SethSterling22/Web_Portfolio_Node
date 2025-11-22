@@ -4,11 +4,23 @@ BEGIN
     CREATE DATABASE [Portfolio];
 END
 GO
+
+
 -- Use the created database
 USE [Portfolio];
 GO
 
+
 -- 2. TABLES CREATION
+
+-- DROP previous tables
+IF OBJECT_ID('Education', 'U') IS NOT NULL DROP TABLE Education;
+IF OBJECT_ID('Experience', 'U') IS NOT NULL DROP TABLE Experience;
+IF OBJECT_ID('Skill', 'U') IS NOT NULL DROP TABLE Skill;
+IF OBJECT_ID('Contact', 'U') IS NOT NULL DROP TABLE Contact;
+IF OBJECT_ID('User', 'U') IS NOT NULL DROP TABLE [User]; -- Drop childs
+IF OBJECT_ID('Degree', 'U') IS NOT NULL DROP TABLE Degree; -- Drop Fathers
+
 
 -- Table User
 CREATE TABLE [User] (
@@ -88,6 +100,8 @@ CREATE TABLE [Contact] (
         REFERENCES [User]([Id])
         ON DELETE CASCADE
 );
+GO
+
 
 -- 3. CRETION OF ADITIONAL INDEXES for performance
 CREATE INDEX idx_user_email ON [User] ([Email]);
@@ -95,3 +109,18 @@ CREATE INDEX idx_education_user ON [Education] ([UserId]);
 CREATE INDEX idx_experience_user ON [Experience] ([UserId]);
 CREATE INDEX idx_skill_user ON [Skill] ([UserId]);
 CREATE INDEX idx_contact_user ON [Contact] ([UserId]);
+GO
+
+
+
+-- 4. DEGREE FIELDS CREATION
+USE [Portfolio];
+GO
+
+INSERT INTO [Degree] ([Name]) VALUES ('Bachelor');
+GO
+INSERT INTO [Degree] ([Name]) VALUES ('Master');
+GO
+INSERT INTO [Degree] ([Name]) VALUES ('PhD');
+GO
+
