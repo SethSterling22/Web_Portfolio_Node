@@ -5,6 +5,6 @@ The project consists of two applications: the front-end and the REST API, which 
 
 Check the other directories for the separate README for each program.
 
-### Architechture Diagram
+### Architecture Diagram:
 
 ![Cloudflare Diagram](./deploy/cloudflare-diagram.png "Cloudflare Diagram")
