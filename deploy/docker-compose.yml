@@ -143,10 +143,13 @@ volumes:
 
 # After all the containers were created, the next command must be executed to activate the service:
 #   sudo docker exec tailscale-funnel tailscale funnel --bg 5000
+#
+#   (Also you can run the command to self-sign the certificate and have it in your Tailnet)
+#   sudo docker exec tailscale-funnel tailscale serve --bg 5000
 
 # To see what's happening:
 #   sudo docker compose logs -f
 
-# To recreate a single container in the compose file:
+# To recreate a single container in the compose file (important to do not abuse of tailscale funnel cert):
 #   sudo docker compose up -d --build --no-deps {SERVICE_NAME}
 
