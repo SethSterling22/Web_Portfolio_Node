@@ -8,3 +8,8 @@ Check the other directories for the separate README for each program.
 ### Architecture Diagram:
 
 ![Cloudflare Diagram](./deploy/cloudflare-diagram.png "Cloudflare Diagram")
+
+
+### Entity Relationship Diagram:
+
+![ERD Diagram](./deploy/database-ER-diagram.png "ERD Diagram")
